@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button onclick="defaultBooks()">Default Books</button>
+    <button onclick="nextBook()">Next Book</button>
+    <button onclick="prevBook()">Previous Book</button>
+    <button onclick="removeBook()">Remove Book</button>
+    <div id="display" >
+
+    </div>
+
+    <button onclick="addBook()">Add Book</button>
+    <input type="text" id="bookName" placeholder="Enter book name">
+    <input type="text" id="authorName" placeholder="Enter Author name">
+    <input type="text" id="imageURL" placeholder="Enter Image URL">
+
+
+    <script>
+        let index = 0
+        let books = [
+            { "bookName": "In Search of Lost Time ", "author": "Marcel Proust", "image": "images/Frost.jpg" },
+            { "bookName": "Ulysses", "author": "James Joyce:", "image": "images/JoyceUlysses2.jpg" },
+            { "bookName": "Don Quixote", "author": "Miguel de Cervantes:", "image": "images/donquixote.jpg" },
+
+        ]
+
+        function displayBooks() {
+            let currentBook = books[index % books.length];
+            display.innerHTML = `
+        <h2>${currentBook.bookName}</h2>
+        <p>By ${currentBook.author}</p>
+        <img src="${currentBook.image}" style="width: 400px;height: 600px;  alt="${currentBook.bookName} Image"  >
+    `;
+        }
+
+        function defaultBooks() {
+            books = [
+                { "bookName": "In Search of Lost Time ", "author": "Marcel Proust" },
+                { "bookName": "Ulysses", "author": "James Joyce:" },
+                { "bookName": "Don Quixote", "author": "Miguel de Cervantes:" }
+            ];
+
+            index = 0;
+            displayBooks();
+        }
+        function nextBook() {
+            index++
+            displayBooks();
+        }
+        function prevBook() {
+            index = index > 0 ? --index : 0
+            displayBooks();
+        }
+        function addBook() {
+            let bookName = document.getElementById('bookName').value;
+            let authorName = document.getElementById('authorName').value;
+            let image = document.getElementById('imageURL').value; // Add an input for image URL
+
+            if (bookName && authorName && image) {
+                books.push({
+                    bookName: bookName,
+                    author: authorName,
+                    image: image
+                });
+
+                // Clear input fields
+                document.getElementById('bookName').value = '';
+                document.getElementById('authorName').value = '';
+                document.getElementById('imageURL').value = '';
+
+                index = books.length - 1;
+                displayBooks();
+            } else {
+                console.log("Please enter book name, author, and image URL.");
+            }
+        }
+
+
+
+        function removeBook() {
+            if (books.length === 0) {
+                console.log("No books to delete");
+                return;
+            }
+
+            // Remove the student at the current index
+            books.splice(index, 1);
+
+            // Adjust index if we've just deleted the last student
+            if (index >= books.length) {
+                display.innerHTML = "No books to delete"
+                index = books.length - 1;
+            }
+
+            // Update the display
+            displayBooks();
+        }
+        displayBooks()
+    </script>
+</body>
+
+</html>
