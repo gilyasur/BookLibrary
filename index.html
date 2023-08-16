@@ -12,9 +12,13 @@
     <button onclick="nextBook()">Next Book</button>
     <button onclick="prevBook()">Previous Book</button>
     <button onclick="removeBook()">Remove Book</button>
-    <div id="display" >
+    <button onclick="showAllBooks()">show All Books</button>
+
+
+    <div id="display">
 
     </div>
+    <div id="display2"></div>
 
     <button onclick="addBook()">Add Book</button>
     <input type="text" id="bookName" placeholder="Enter book name">
@@ -23,14 +27,15 @@
 
 
     <script>
+        const MY_SERVER = "http://localhost:3000/books"
         let index = 0
-        let books = [
-            { "bookName": "In Search of Lost Time ", "author": "Marcel Proust", "image": "images/Frost.jpg" },
-            { "bookName": "Ulysses", "author": "James Joyce:", "image": "images/JoyceUlysses2.jpg" },
-            { "bookName": "Don Quixote", "author": "Miguel de Cervantes:", "image": "images/donquixote.jpg" },
+        let books = []
 
-        ]
+        async function getData() {
 
+            books = await fetch(MY_SERVER).then(response => response.json())
+            displayBooks();
+        }
         function displayBooks() {
             let currentBook = books[index % books.length];
             display.innerHTML = `
@@ -40,15 +45,31 @@
     `;
         }
 
-        function defaultBooks() {
-            books = [
-                { "bookName": "In Search of Lost Time ", "author": "Marcel Proust" },
-                { "bookName": "Ulysses", "author": "James Joyce:" },
-                { "bookName": "Don Quixote", "author": "Miguel de Cervantes:" }
-            ];
+        async function defaultBooks() {
+            books = []
+            books = await fetch(MY_SERVER).then(response => response.json())
+                ;
 
             index = 0;
             displayBooks();
+        }
+        function showAllBooks() {
+
+            let display2 = document.getElementById('display2');
+            display2.innerHTML = ''; // Clear previous content
+
+            for (let index = 0; index < books.length; index++) {
+                const book = books[index];
+                // Create a new div for each book
+                const bookDiv = document.createElement('div');
+                bookDiv.className = 'book'; // You can style this class with CSS if needed
+                bookDiv.innerHTML = `
+            <h2>${book.bookName}</h2>
+            <p>By ${book.author}</p>
+            <img src="${book.image}" style="width: 400px;height: 600px;" alt="${book.bookName} Image">
+        `;
+                display2.appendChild(bookDiv);
+            }
         }
         function nextBook() {
             index++
@@ -102,7 +123,8 @@
             // Update the display
             displayBooks();
         }
-        displayBooks()
+
+        getData()
     </script>
 </body>
 

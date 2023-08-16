@@ -1,0 +1,19 @@
+{
+  "books": [
+    {
+      "bookName": "In Search of Lost Time ",
+      "author": "Marcel Proust",
+      "image": "../bookLibrary/images/Frost.jpg"
+    },
+    {
+      "bookName": "Ulysses",
+      "author": "James Joyce:",
+      "image": "../bookLibrary/images/JoyceUlysses2.jpg"
+    },
+    {
+      "bookName": "Don Quixote",
+      "author": "Miguel de Cervantes:",
+      "image": "../bookLibrary/images/donquixote.jpg"
+    }
+  ]
+}
